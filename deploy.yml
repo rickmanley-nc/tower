@@ -1,0 +1,38 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Create Tower Kickstart file
+      template:
+        src: "../templates/tower-ks.cfg.j2"
+        dest: /var/www/html/tower-ks.cfg
+        mode: 0644
+      tags:
+        - kickstart
+
+    - name:     restorecon on /var/www/html (this should really be a notify if we create the kickstart)
+      command:  restorecon -Rv /var/www/html
+      tags:
+        - deploy
+
+    - name: Install DEMO-Tower from Kickstart
+      command: virt-install --name DEMO-Tower --memory {{tower_memory}} --vcpus {{tower_vcpus}} --disk size=30,pool={{libvirt_storage_pool_name}} --location /home/{{laptop_local_user}}/{{libvirt_storage_pool_name}}/original/rhel-server-7.4-x86_64-dvd.iso --extra-args "ks=http://{{libvirt_ip_address}}/tower-ks.cfg" --os-type linux --noautoconsole
+      tags: deploy
+
+    - name: WAIT 5 minutes
+      wait_for:
+        timeout: 300
+      tags: deploy
+
+    - name: Start the VM
+      command: virsh start test2-tower
+      tags: deploy
+
+    - name: Wait for SSH to come up on Tower
+      local_action:
+        module: wait_for
+          host={{ tower_hostname }}
+          port=22
+          delay=1
+          timeout=300
+      tags: deploy

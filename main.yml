@@ -1,0 +1,13 @@
+---
+- name: Configure OS
+  hosts: all
+  roles:
+    - hostname
+    - firewall
+    - etc-hosts
+    - register
+
+- name: Install and Configure Tower
+  hosts: all
+  roles:
+    - install-tower
