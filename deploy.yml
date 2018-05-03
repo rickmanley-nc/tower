@@ -16,6 +16,17 @@
       tags:
         - kickstart
 
+    - name: Remove all previous hostname entries in /root/.ssh/known_hosts
+      command: ssh-keygen -R {{ tower_hostname }}
+      ignore_errors: yes
+      tags: deploy
+
+    - name: Remove all previous hostname entries in /home/{{laptop_local_user}}/.ssh/known_hosts
+      command: ssh-keygen -R {{ tower_hostname }}
+      ignore_errors: yes
+      sudo: yes
+      tags: deploy
+
     - name: Generate Tower Inventory file from Template
       template:
         src: "../templates/inventory-tower-initial-setup.j2"
