@@ -2,8 +2,8 @@
 #Laptop Configure section#
 laptop_hostname: laptop.rnelson-demo.com
 tower_hostname: tower.rnelson-demo.com
-laptop_ip_address:         192.168.126.1
-tower_ip_address:          192.168.126.3
+laptop_ip_address:         192.168.127.1
+tower_ip_address:          192.168.127.3
 
 tower_repos:
   - rhel-7-server-rpms
@@ -31,14 +31,20 @@ tower_ports:
   - '123/udp'  # NTP
 
 ##Tower Kickstart Section##
-tower_nic: eth0
-tower_disk: sda
+tower_nic: ens3 #may have to change to eth0
+tower_disk: sda #may have to change to vda
 tower_vcpus: 1
 tower_memory: 4096
 ##LibVirt Storage and Network Variables##
 libvirt_storage_pool_name: Images
-libvirt_ip_address:        192.168.126.1
+libvirt_ip_address:        192.168.127.1
 libvirt_netmask:           255.255.255.0
+libvirt_bridge_name:       virbr5
+libvirt_network_name:      rnelson-demo
+##Tower Inventory Passwords##
+tower_admin_password: redhat
+tower_pg_password: redhat
+tower_rabbitmq_password: redhat
 
 ##Local username on Laptop##
 laptop_local_user:         rnelson

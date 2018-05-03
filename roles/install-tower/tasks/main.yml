@@ -1,10 +1,30 @@
 ---
-- name:
-
+- name: Install 'ansible' and 'ipa-client' RPMs
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - ansible
+    - ipa-client
+  tags: install
 
 - name: Download and Unarchive Ansible Tower Bundle Installer
   unarchive:
     src: https://releases.ansible.com/ansible-tower/setup-bundle/ansible-tower-setup-bundle-latest.el7.tar.gz
     dest: /root/
     remote_src: yes
-  tags: tower
+    list_files: yes
+  register: archive_contents
+  tags: install
+
+- name: Download Inventory file from Laptop
+  get_url:
+    url: http://{{laptop_ip_address}}/inventory-tower-initial-setup
+    dest: /root/{{archive_contents.files[0]}}/inventory
+    force: yes
+    mode: 0644
+  tags: install
+
+- name: Execute setup.sh script
+  command: /root/{{archive_contents.files[0]}}/setup.sh
+  tags: install
