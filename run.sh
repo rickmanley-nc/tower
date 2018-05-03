@@ -1,6 +1,6 @@
 cd /home/rnelson
 cd git
-git clone http://github.com/rickmanley-nc/tower.git
+git clone git@github.com:rickmanley-nc/tower.git
 cd tower
 
 sudo ansible-playbook -i hosts deploy.yml
