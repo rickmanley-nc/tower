@@ -2,6 +2,12 @@
 - hosts: all
 
   tasks:
+    - name: Generate the root password hash for kickstart template (would prefer a prompt)
+      local_action: command python -c 'import crypt; print crypt.crypt("{{ tower_kickstart_root_password }}", "$6$3dgaQk0H")'
+      register: pass_hash
+      tags:
+        - kickstart
+
     - name: Create Tower Kickstart file
       template:
         src: "../templates/tower-ks.cfg.j2"

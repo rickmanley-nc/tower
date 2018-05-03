@@ -20,7 +20,7 @@ network  --bootproto=static --device={{tower_nic}} --gateway={{libvirt_ip_addres
 network  --hostname={{tower_hostname}}
 
 # Root password
-rootpw --iscrypted $6$bhnWo77shC8XBHcv$Mw/dtmZY3pQmDxFoOHm2Df/atMjibDi7Jnf5LMqaALh4vUkcjFqWYgB49D.OGQu8kdUHRapPO0nOcLwaPIzfI0
+rootpw --iscrypted {{ pass_hash.stdout }}
 # System services
 services --enabled="chronyd"
 # System timezone

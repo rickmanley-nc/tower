@@ -1,6 +1,0 @@
----
-- hosts: all
-
-  tasks:
-    - name: Update Network Source
-      script: files/vifmove.sh DEMO1-Tower - rnelson-demo
