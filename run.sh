@@ -1,5 +1,4 @@
-cd /home/rnelson
-cd git
+cd /home/rnelson/git
 git clone git@github.com:rickmanley-nc/tower.git
 cd tower
 
