@@ -2,8 +2,8 @@ cd /home/rnelson/git
 git clone git@github.com:rickmanley-nc/tower.git
 cd tower
 
-sudo ansible-playbook -i hosts deploy.yml
-sudo ansible-playbook -i hosts2 --ask-vault-pass main.yml
+ansible-playbook -i hosts --ask-become-pass deploy.yml
+ansible-playbook -i hosts2 --ask-vault-pass main.yml
 
 source ~/.bashrc
 exit 0

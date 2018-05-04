@@ -13,35 +13,28 @@
         src: "../templates/tower-ks.cfg.j2"
         dest: /var/www/html/tower-ks.cfg
         mode: 0644
+      become: yes
       tags:
         - kickstart
-
-    - name: Remove all previous hostname entries in /root/.ssh/known_hosts
-      command: ssh-keygen -R {{ tower_hostname }}
-      become: yes
-      ignore_errors: yes
-      tags: deploy
-
-    - name: Remove all previous hostname entries in /home/{{laptop_local_user}}/.ssh/known_hosts
-      command: ssh-keygen -R {{ tower_hostname }}
-      ignore_errors: yes
-      tags: deploy
 
     - name: Generate Tower Inventory file from Template
       template:
         src: "../templates/inventory-tower-initial-setup.j2"
         dest: /var/www/html/inventory-tower-initial-setup
         mode: 0644
+      become: yes
       tags:
         - kickstart
 
     - name: restorecon on /var/www/html
       command: restorecon -Rv /var/www/html
+      become: yes
       tags:
         - deploy
 
     - name: Install DEMO-Tower from Kickstart on 'default' network
       command: virt-install --name DEMO-Tower --memory {{tower_memory}} --vcpus {{tower_vcpus}} --disk size=30,pool={{libvirt_storage_pool_name}} --location /home/{{laptop_local_user}}/{{libvirt_storage_pool_name}}/original/rhel-server-7.4-x86_64-dvd.iso --extra-args "ks=http://{{libvirt_ip_address}}/tower-ks.cfg" --os-type linux --noautoconsole
+      become: yes
       tags: deploy
 
     - name: WAIT 5 minutes
@@ -51,9 +44,11 @@
 
     - name: Update Network Source from 'default' to '{{libvirt_network_name}}'
       script: files/vifmove.sh DEMO-Tower - {{libvirt_network_name}}
+      become: yes
 
     - name: Start the VM
       command: virsh start DEMO-Tower
+      become: yes
       tags: deploy
 
     - name: Wait for SSH to come up on Tower
