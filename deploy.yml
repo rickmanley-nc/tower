@@ -44,9 +44,9 @@
       become: yes
       tags: deploy
 
-    - name: WAIT 5 minutes
+    - name: WAIT 7 minutes (would prefer some method of monitoring via virsh or qemu)
       wait_for:
-        timeout: 300
+        timeout: 420
       tags: deploy
 
     - name: Update Network Source from 'default' to '{{libvirt_network_name}}'
