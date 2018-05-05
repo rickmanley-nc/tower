@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  connection: local
 
   tasks:
     - name: Generate the root password hash for kickstart template (would prefer a prompt)
@@ -32,11 +33,11 @@
       tags:
         - deploy
 
-    - name: Workaround - Need to remove ssh hostkey in /root/.ssh/known_hosts. Even though we have SSH hostkey checking disabled in ansible.cfg, this still occurs
-      command: ssh-keygen -R {{tower_hostname}}
-      become: yes
-      tags:
-        - deploy
+#    - name: Workaround - Need to remove ssh hostkey in /root/.ssh/known_hosts. Even though we have SSH hostkey checking disabled in ansible.cfg, this still occurs
+#      command: ssh-keygen -R {{tower_hostname}}
+#      become: yes
+#      tags:
+#        - deploy
 
     - name: Install DEMO-Tower from Kickstart on 'default' network
       command: virt-install --name DEMO-Tower --memory {{tower_memory}} --vcpus {{tower_vcpus}} --disk size=30,pool={{libvirt_storage_pool_name}} --location /home/{{laptop_local_user}}/{{libvirt_storage_pool_name}}/original/rhel-server-7.4-x86_64-dvd.iso --extra-args "ks=http://{{libvirt_ip_address}}/tower-ks.cfg" --os-type linux --noautoconsole
