@@ -3,9 +3,15 @@
   connection: local
 
   tasks:
-    - name: Generate the root password hash for kickstart template (would prefer a prompt)
+    - name: Generate the root password hash for kickstart template (would prefer a prompt, as password is stored in variables file)
       local_action: command python -c 'import crypt; print crypt.crypt("{{ tower_kickstart_root_password }}", "$6$3dgaQk0H")'
-      register: pass_hash
+      register: root_pass_hash
+      tags:
+        - kickstart
+
+    - name: Generate the ansible user password hash for kickstart template (would prefer a prompt, as password is stored in variables file)
+      local_action: command python -c 'import crypt; print crypt.crypt("{{ ansible_kickstart_password }}", "$6$3dgaQk0H")'
+      register: ansible_pass_hash
       tags:
         - kickstart
 

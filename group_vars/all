@@ -36,6 +36,7 @@ tower_disk: sda #may have to change to vda
 tower_vcpus: 1
 tower_memory: 4096
 tower_kickstart_root_password: RedHat1!
+ansible_kickstart_password: RedHat1!
 ##LibVirt Storage and Network Variables##
 libvirt_storage_pool_name: Images
 libvirt_ip_address:        192.168.127.1

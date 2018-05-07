@@ -3,7 +3,7 @@ git clone git@github.com:rickmanley-nc/tower.git
 cd tower
 
 ansible-playbook -i hosts --ask-become-pass deploy.yml
-ansible-playbook -i hosts2 --ask-vault-pass main.yml
+ansible-playbook -i hosts2 -u ansible --ask-become-pass --ask-vault-pass main.yml -k 
 
 source ~/.bashrc
 exit 0
