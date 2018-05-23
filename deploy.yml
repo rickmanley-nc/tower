@@ -50,14 +50,19 @@
       become: yes
       tags: deploy
 
-    - name: WAIT 7 minutes (would prefer some method of monitoring via virsh or qemu)
-      wait_for:
-        timeout: 420
+    - name: check that DEMO-Tower VM is stopped
+      action: virt name=DEMO-Tower command=status
+      register: result
+      until: result.status.find("shutdown") != -1
+      retries: 100
+      delay: 5
+      become: yes
       tags: deploy
 
     - name: Update Network Source from 'default' to '{{libvirt_network_name}}'
       script: files/vifmove.sh DEMO-Tower - {{libvirt_network_name}}
       become: yes
+      tags: deploy
 
     - name: Start the VM
       command: virsh start DEMO-Tower
