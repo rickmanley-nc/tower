@@ -15,7 +15,7 @@
   command: subscription-manager repos --disable "*"
   tags: register
 
-- name: Enable Satellite repositories
+- name: Enable repositories
   command: /usr/sbin/subscription-manager repos --enable="{{item}}"
   with_items: "{{ tower_repos }}"
   tags: register
